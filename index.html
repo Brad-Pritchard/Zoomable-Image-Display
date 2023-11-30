@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            background-color: #bcb8b8; /* Background color of the whole page */
+        }
+
+        .image-viewers-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px; /* Reduced padding from 200px to 20px for a better view */
+            gap: 25px
+        }
+
+        .image-viewer {
+            text-align: center;
+            padding: 2px;
+            background-color: #060606; /* Background color of the image viewer windows */
+        }
+
+        .image-container {
+            display: inline-block;
+            border: 2px solid #000;
+            position: relative;
+            width: 750px;
+            height: 650px;
+            overflow: hidden;
+        }
+
+        .image-container img {
+            position: absolute;
+            max-width: none;
+            max-height: none;
+            transition: transform 0.25s ease;
+            cursor: grab;
+        }
+
+        .controls button {
+            background-color: #f0f0f0;
+            border: none;
+            padding: 10px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .controls button:hover {
+            background-color: #ddd;
+        }
+
+        .label-container {
+            text-align: center;
+            margin-top: 15px;
+            padding: 5px;
+            display: inline-block;
+            background-color: #f8f8f8;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .image-label {
+            margin: 0;
+            padding: 5px 10px;
+            display: inline;
+            font-size: 32px;
+            color: #333;
+        }
+
+        .textbox-container {
+            text-align: center; /* Centers the textarea */
+            position: fixed; /* Fixes the textarea at the bottom */
+            left: 0; /* Aligns the container to the left edge */
+            right: 0; /* Aligns the container to the right edge */
+            bottom: 0; /* Positions the container at the bottom of the page */
+            padding: 50px; /* Adds some padding around the textarea */
+        }
+
+        #textbox {
+    width: 50%; /* Sets the width of the textarea to 50% of its container */
+    margin: 0 auto; /* Centers the textarea block in the container */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="image-viewers-container">
+        <!-- First Image Viewer -->
+        <div class="image-viewer">
+            <div class="image-container">
+                <img id="image-to-view" src="A51_3-4_JP6fUNR.width-2000.jpg" alt="First Image Description">
+            </div>
+            <div class="controls">
+                <button id="zoom-in-1">Zoom In</button>
+                <button id="zoom-out-1">Zoom Out</button>
+                <button id="go-home-1">Go Home</button>
+                <button id="toggle-fullpage-1">Toggle Full Page</button>
+            </div>
+            <div class="label-container">
+                <p class="image-label">Lucio Marliani, <i>Forged in the Mannerist style</i>, 1533-97</p>
+            </div>
+        </div>
+
+        <!-- Second Image Viewer -->
+        <div class="image-viewer">
+            <div class="image-container">
+                <img id="image-to-view-2" src="S16.width-1275.jpg" alt="Second Image Description">
+            </div>
+            <div class="controls">
+                <button id="zoom-in-2">Zoom In</button>
+                <button id="zoom-out-2">Zoom Out</button>
+                <button id="go-home-2">Go Home</button>
+                <button id="toggle-fullpage-2">Toggle Full Page</button>
+            </div>
+            <div class="label-container">
+                <p class="image-label"><i>Gilded Helm Decorated in Acid-resistant Coating</i>, 1400s</p>
+            </div>
+        </div>
+    </div>
+    <div class="textbox-container">
+        <textarea id="textbox" rows="1" cols="20">Images sourced from https://www.wallacecollection.org/explore/explore-in-depth/latest-films/the-art-of-renaissance-armour-materials-and-techniques/</textarea>
+    </div>
+    <script>
+        // Function to apply interactivity to an image viewer
+        function makeInteractive(imgId, zoomInId, zoomOutId, goHomeId, toggleFullpageId) {
+            var img = document.getElementById(imgId);
+            var scale = 0.5;
+            img.style.transform = 'scale(' + scale + ')';
+            
+            var isDragging = false;
+            var startX, startY, dragStartX, dragStartY;
+
+            // Zoom In
+            document.getElementById(zoomInId).onclick = function() {
+                scale *= 1.2;
+                img.style.transform = 'scale(' + scale + ')';
+            };
+
+            // Zoom Out
+            document.getElementById(zoomOutId).onclick = function() {
+                scale = Math.max(0.1, scale / 1.2);
+                img.style.transform = 'scale(' + scale + ')';
+            };
+
+            // Go Home
+            document.getElementById(goHomeId).onclick = function() {
+                scale = 0.5;
+                img.style.transform = 'scale(' + scale + ')';
+                img.style.top = '0px';
+                img.style.left = '0px';
+            };
+
+            // Toggle Full Page
+            document.getElementById(toggleFullpageId).onclick = function() {
+                if (!document.fullscreenElement) {
+                    img.requestFullscreen().catch(err => {
+                        alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                    });
+                } else {
+                    document.exitFullscreen();
+                }
+            };
+
+            // Dragging
+            img.onmousedown = function(e) {
+                isDragging = true;
+                dragStartX = e.clientX - img.getBoundingClientRect().left;
+                dragStartY = e.clientY - img.getBoundingClientRect().top;
+                startX = e.clientX;
+                startY = e.clientY;
+            };
+
+            img.onmousemove = function(e) {
+                if (isDragging) {
+                    var currentX = e.clientX;
+                    var currentY = e.clientY;
+                    var deltaX = currentX - startX;
+                    var deltaY = currentY - startY;
+                    img.style.left = img.offsetLeft + deltaX + 'px';
+                    img.style.top = img.offsetTop + deltaY + 'px';
+                    startX = currentX;
+                    startY = currentY;
+                }
+            };
+
+            img.onmouseup = function() {
+                isDragging = false;
+            };
+
+            img.onmouseleave = function() {
+                isDragging = false;
+            };
+        }
+
+        // Initialize both image viewers
+        makeInteractive('image-to-view', 'zoom-in-1', 'zoom-out-1', 'go-home-1', 'toggle-fullpage-1');
+        makeInteractive('image-to-view-2', 'zoom-in-2', 'zoom-out-2', 'go-home-2', 'toggle-fullpage-2');
+    </script>
+</body>
+</html>
+
