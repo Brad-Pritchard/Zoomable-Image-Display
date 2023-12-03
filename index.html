@@ -25,7 +25,7 @@
             border: 2px solid #000;
             position: relative;
             width: 750px;
-            height: 650px;
+            height: 700px;
             overflow: hidden;
         }
 
@@ -63,7 +63,7 @@
             margin: 0;
             padding: 5px 10px;
             display: inline;
-            font-size: 32px;
+            font-size: 24px;
             color: #333;
         }
 
@@ -73,7 +73,7 @@
             left: 0; /* Aligns the container to the left edge */
             right: 0; /* Aligns the container to the right edge */
             bottom: 0; /* Positions the container at the bottom of the page */
-            padding: 50px; /* Adds some padding around the textarea */
+            padding: 5px; /* Adds some padding around the textarea */
         }
 
         #textbox {
@@ -97,14 +97,14 @@
                 <button id="toggle-fullpage-1">Toggle Full Page</button>
             </div>
             <div class="label-container">
-                <p class="image-label">Lucio Marliani, <i>Forged in the Mannerist style</i>, 1533-97</p>
+                <p class="image-label">Lucio Piccinino, <i>Armour for Alfonso II D’Este, Duke of Ferrara</i>, 1533-97</p>
             </div>
         </div>
 
         <!-- Second Image Viewer -->
         <div class="image-viewer">
             <div class="image-container">
-                <img id="image-to-view-2" src="S16.width-1275.jpg" alt="Second Image Description">
+                <img id="image-to-view-2" src="fillipo_negroli_burgonet.jpg" alt="Second Image Description">
             </div>
             <div class="controls">
                 <button id="zoom-in-2">Zoom In</button>
@@ -113,12 +113,14 @@
                 <button id="toggle-fullpage-2">Toggle Full Page</button>
             </div>
             <div class="label-container">
-                <p class="image-label"><i>Gilded Helm Decorated in Acid-resistant Coating</i>, 1400s</p>
+                <p class="image-label">Filippo Negroli, <i>Burgonet</i>, 1539</p>
             </div>
         </div>
     </div>
     <div class="textbox-container">
-        <textarea id="textbox" rows="1" cols="20">Images sourced from https://www.wallacecollection.org/explore/explore-in-depth/latest-films/the-art-of-renaissance-armour-materials-and-techniques/</textarea>
+        <textarea id="textbox" rows="1" cols="20">Left image sourced from "https://www.wallacecollection.org/explore/explore-in-depth/latest-films/the-art-of-renaissance-armour-materials-and-techniques/"
+Right image sourced from "https://www.metmuseum.org/art/collection/search/22634"
+        </textarea>
     </div>
     <script>
         // Function to apply interactivity to an image viewer
